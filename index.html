@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>焼肉打</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/sanitize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="img-box">
+        <p class="title">食べる【Enter】</p>
+        <img id="grille" src="img/backGround.png" alt="グリル" >
+        <div class="types">
+            <p class="type1"></p>
+            <p class="type2"></p>
+            <p class="timer">60</p>
+            
+            <img src="img/on-sound.png" class="vol" onclick="mute()">
+            <img src="img/mute.png" class="unVol" onclick="mute()">
+
+            <img src="img/Shrimp.png" class="meat-img">
+
+
+            <img class="img1" src="">
+            <img class="img2" src="">
+            <img class="img3" src="">
+            <img class="img4" src="">
+            
+
+            <div>
+                <input class="min" type="radio" checked id="1" name="button"><label for="1">1min</label>
+                <input class="min" type="radio"  id="2" name="button"><label for="2">3min</label>
+                <input class="min" type="radio"  id="3" name="button"><label for="3">5min</label>
+                <input class="min" type="radio"  id="3" name="button"><label for="3">ENDless</label>
+
+            </div>
+
+        </div>
+    </div>
+
+    <audio id="beep-sound">
+        <source src="audio/beep-sound.mp3" type="audio/mp3">
+    </audio>
+    <audio id="correct-sound">
+        <source src="audio/correct-sound.mp3" type="audio/mp3">
+    </audio>
+    <audio id="meat-sound">
+        <source src="audio/meat-sound.mp3" type="audio/mp3">
+    </audio>
+    <script src="script.js"></script>
+</body>
+</html>
