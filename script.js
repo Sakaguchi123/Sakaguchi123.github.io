@@ -31,22 +31,24 @@ const meat = [{name: "ザブトン",price: 500,judg: "zabuton",imgs: "meat1"},
               {name: "玉ねぎ",price: 500,judg: "tamanegi",imgs: "Onion"},
               {name: "焼きエビ",price: 500,judg: "yakiebi",imgs: "Shrimp"}
 ]
-
-
-
 //html要素を取得する
 const title = document.querySelector(".title");
 const img1 = document.querySelector(".img1");
-const metaImg = document.querySelector(".meat-img");
 const type1 = document.querySelector(".type1");
 const type2 = document.querySelector(".type2");
 const beepSound = document.getElementById("beep-sound");
 const correctSound = document.getElementById("correct-sound");
-const grilleSound = document.getElementById("meat-sound");
+const  grilleSound = document.getElementById("meat-sound");
+const timeUpSound = document.getElementById("time-up");
 const vol = document.querySelector(".vol");
 const unVol = document.querySelector(".unVol");
+const metaImg = document.querySelector(".meat-img");
 const timerText = document.querySelector(".timer");
-
+const correctTypeStr = document.querySelector(".correct-type");
+const missTypeStr = document.querySelector(".miss-type");
+const wps = document.querySelector(".wps");
+const resultBackground = document.querySelector(".result");
+const resultText = document.querySelector(".text");
 
 
 //配列・変数の用意
@@ -55,18 +57,27 @@ let judgmentArr = [];
 let judgmentSpan;
 let num = 0;
 let intervalStop;
-let meatSoundControl = true;
+let missType = 0;
+let correctType = 0;
+let count;
+
+//初期化
+correctTypeStr.style.visibility = "hidden";
+missTypeStr.style.visibility = "hidden";
+wps.style.visibility = "hidden";
+resultBackground.style.visibility = "hidden";
+resultText.style.visibility = "hidden";
+
 
 //画像処理
 let img = [];
 for (const key in meat) {
-  img.push(`img/${meat[key]["imgs"]}.png`)
+  img.push(`img/${meat[key]["imgs"]}.png`)    //問題の中のimgsと紐づけた画像　問題と同じ順番で配列に入れる
 }
 
 
 //問題を表示させる
 function questions(type) {
-
   //初期化
   judgment = "";
   judgmentArr = [];
@@ -77,7 +88,7 @@ function questions(type) {
 
   //問題に紐づけた画像を表示させる
   metaImg.src=img[random];
-  switch (img[random]) {
+  switch (img[random]) {                                 //switch文で画像ごとにstyleを変更する
     case "img/meat1.png" :
       metaImg.style.width = "8%";
       metaImg.style.left = "47%";
@@ -140,6 +151,7 @@ function questions(type) {
     break;
   }
 
+
   //入力後の文字の色を変える処理
   judgmentArr = judgment.split("");                     //ローマ字を1文字ずつの配列に入れる
   for (const oneArr of judgmentArr) {                   //1文字ずつ処理する
@@ -152,21 +164,33 @@ function questions(type) {
 
 //キーが押されたときに動作する関数
 document.addEventListener("keydown",keyDown);  //キーを押すごとにkeydownイベントが発生。2個めの引数に関数を指定した場合キーが押されたとき処理が実行される
-
 function keyDown(e) {                          //eのみだとkeyboardEventオブジェクトが出力　ドット記法でkeyというキーを選択して値を出力する。
   //スタート処理
-  if (e.key === "Enter" && title.textContent === "食べる【Enter】") {   //Enterキーが押されたら
+  if (e.key === "Enter" && title.textContent === "START【Enter】") {   //Enterキーが押されたら
+    correctType = 0;
+    missType = 0;
+    count = 60;
+
+
     title.textContent = "START!!";                                      //titleをスタートに書き換える
-    
     //1秒後にtitleを消す
     let timeOut = function () {
-      title.textContent = "";                       //titleを空欄にする
-      questions(type1);                             //肉(問題)を表示
-      intervalStop = setInterval(timerStart,1000); //1秒ごとにtimerStart関数を実行する
-      meatSound();
+    title.textContent = "";                                             //titleを空欄にする
+    questions(type1);                                                   //肉(問題)を表示
+    intervalStop = setInterval(timerStart,1000);                        //1秒ごとにtimerStart関数を実行する
+    meatSound();
 
     };
     setTimeout(timeOut, 1000); //timeOut呼び出し、秒数の指定
+  }
+  //再スタート処理
+  if (e.key === "Enter" && correctTypeStr.style.visibility === "visible") {
+    correctTypeStr.style.visibility = "hidden";       //結果を非表示にする
+    missTypeStr.style.visibility = "hidden";
+    wps.style.visibility = "hidden";
+    resultBackground.style.visibility = "hidden";
+    resultText.style.visibility = "hidden";
+    title.textContent = "START【Enter】"
   }
   
   //入力判定
@@ -175,38 +199,64 @@ function keyDown(e) {                          //eのみだとkeyboardEventオ�
     judgValue[num].classList.remove("default");                           //classを削除
     judgValue[num].classList.remove("unCorrect");                         //classを削除
     judgValue[num].classList.add("correct");                              //classを追加
+    correctType ++;                                                       //correctを数える
     num++;                                                                //次の文字へ行くため1プラスする
-  }else {                                                                 //入力した文字が合っていなかった場合
+    
+  }else if (e.key !==judgValue[num].innerText && e.key !== "Escape"){     //タイプミスしたとき                                                           //入力した文字が合っていなかった場合
     beep();
     judgValue[num].classList.remove("default");                           //classを削除
     judgValue[num].classList.add("unCorrect");                            //classを追加(文字が赤くなる)
+    missType++;                                                           //missを数える
   }
-  
-  if (num === judgValue.length) {
-    //全文字入力し終わったら
+
+  //終了判定
+  if (num === judgValue.length) {                                         //全文字入力し終わったら
     correct();
     for(let i = 0; i < judgValue.length; i++) {                           //type2の中のspanタグを全て削除する
       const spanElement = type2.querySelector("span");                    //spanタグを一つ持ってくる
       type2.removeChild(spanElement);                                     //spanタグを削除する
     }
     questions(type1);                                                     //次の問題をセットする
-  } else if (e.key === "Escape") {
-    gameEnd();
-  }
-}
 
+  } else if (e.key === "Escape") {
+    clearInterval(intervalStop);                                          //setIntervalを停止させる
+    timerText.textContent = 60;
+    gameEnd();
+  } 
+}
 
 //終了処理
 function gameEnd() {
-  title.textContent = "食べる【Enter】";          //初期画面に戻す
+
+  title.textContent = "TimeUp!!!";            //初期画面に戻す
   type1.textContent = "";
   type2.textContent = "";
   metaImg.src = "";
+  grilleSound.pause();
+  timeUpSound.play()
+  let endTimeOut = function () {             //時間をおいてTimeUpを削除する
+    title.textContent = "";
+
+    //結果表示
+    correctTypeStr.textContent = `タイプ数： ${correctType} 回`;
+    missTypeStr.textContent = `ミスタイプ数： ${missType} 回`;
+    correctType = correctType / 60;
+    wps.textContent = `平均タイプ数： ${(Math.floor(correctType * 10)) / 10} 回/秒`;
+    resultText.textContent = "<Enter>キーでタイトルに戻る"
+
+    correctTypeStr.style.visibility = "visible";
+    missTypeStr.style.visibility = "visible";
+    wps.style.visibility = "visible";
+    resultBackground.style.visibility = "visible";
+    resultText.style.visibility = "visible";
+    
+  }
+  setTimeout(endTimeOut, 1800);
 }
 
-
 //タイマー実行関数
-let count = 60;                                 //countを60秒に設定
+count = 60;                                 //countを60秒に設定
+
 function timerStart() {
   if(count > 0) {                               //countがゼロ以上であれば
     count--;                                    //-1する
@@ -219,8 +269,6 @@ function timerStart() {
     gameEnd();                                  //ゲームを終了させる
   }
 }
-
-
 
 
 //効果音
@@ -237,20 +285,20 @@ function mute() {
   if (beepSound.muted) {
     beepSound.muted = false;            //false = 音が出る
     correctSound.muted = false;
+    grilleSound.muted = false;
     unVol.style.visibility = "hidden";
     vol.style.visibility = "visible";
   }else {
     beepSound.muted = true;             //true = 音が出ない
     correctSound.muted = true;
+    grilleSound.muted = true;
     unVol.style.visibility = "visible";
     vol.style.visibility = "hidden";
   }
 }
-
 //肉を焼く効果音
 function meatSound() {
   grilleSound.currentTime = 0;
   grilleSound.play();
-  meatSoundControl = true;
-  grilleSound.loop = meatSoundControl;
+  grilleSound.loop = true;              //ループ処理
 }
