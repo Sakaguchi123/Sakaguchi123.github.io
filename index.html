@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="img-box">
-        <p class="title">食べる【Enter】</p>
+        <p class="title">START【Enter】</p>
         <img id="grille" src="img/backGround.png" alt="グリル" >
         <div class="types">
             <p class="type1"></p>
@@ -23,21 +23,15 @@
             <img src="img/on-sound.png" class="vol" onclick="mute()">
             <img src="img/mute.png" class="unVol" onclick="mute()">
 
-            <img src="img/Shrimp.png" class="meat-img">
-
+            <img src="" class="meat-img">
 
             <img class="img1" src="">
-            <img class="img2" src="">
-            <img class="img3" src="">
-            <img class="img4" src="">
-            
 
-            <div>
-                <input class="min" type="radio" checked id="1" name="button"><label for="1">1min</label>
-                <input class="min" type="radio"  id="2" name="button"><label for="2">3min</label>
-                <input class="min" type="radio"  id="3" name="button"><label for="3">5min</label>
-                <input class="min" type="radio"  id="3" name="button"><label for="3">ENDless</label>
-
+            <div class="result">
+                <p id="resultText" class="correct-type"></p>
+                <p id="resultText" class="miss-type"></p>
+                <p id="resultText" class="wps"></p>
+                <p id="resultText" class="text"><Enterキーでタイトルに戻る></p>
             </div>
 
         </div>
@@ -46,12 +40,19 @@
     <audio id="beep-sound">
         <source src="audio/beep-sound.mp3" type="audio/mp3">
     </audio>
+
     <audio id="correct-sound">
         <source src="audio/correct-sound.mp3" type="audio/mp3">
     </audio>
+
+    <audio id="time-up">
+        <source src="audio/time-up.mp3" type="audio/mp3">
+    </audio>
+
     <audio id="meat-sound">
         <source src="audio/meat-sound.mp3" type="audio/mp3">
     </audio>
+
     <script src="script.js"></script>
 </body>
 </html>
