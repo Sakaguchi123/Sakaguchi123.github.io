@@ -33,6 +33,7 @@ img {
   font-size: 70px;
   font-weight: bold;
   z-index: 5;
+  color: white;
 }
 .types p{
   font-size: 40px;
@@ -80,8 +81,8 @@ img {
 }
 .timer{
   position: absolute;
-  font-size: 70px;
-  bottom: 85%;
+  font-size: 80px;
+  bottom: 88%;
   left: 95%;
 }
 
@@ -94,20 +95,19 @@ img {
   z-index: 2;
   rotate: 30deg;
 }
-
-
-.label{
-  display: block; /* ブロックレベル要素化する */
-  float: left; /* 要素の左寄せ・回り込を指定する */
-  margin: 5px; /* ボックス外側の余白を指定する */
-  width: 100px; /* ボックスの横幅を指定する */
-  height: 45px; /* ボックスの高さを指定する */
-  padding-left: 5px; /* ボックス内左側の余白を指定する */
-  padding-right: 5px; /* ボックス内御右側の余白を指定する */
-  color: #b20000; /* フォントの色を指定 */
-  text-align: center; /* テキストのセンタリングを指定する */
-  line-height: 45px; /* 行の高さを指定する */
-  cursor: pointer; /* マウスカーソルの形（リンクカーソル）を指定する */
-  border: 2px solid #006DD9;/* ボックスの境界線を実線で指定する */
-  border-radius: 5px; /* 角丸を指定する */
+.result{
+  position: absolute;
+  background:rgba(0, 0, 0, 0.7);
+  border-radius: 10%;
+  left: 36.5%;
+  bottom: 46%;
+}
+#resultText{
+  font-size: 35px;
+  margin-right: 20px;
+  margin-left: 20px;
+  text-align: left;
+}
+.text{
+  text-align: center;
 }
