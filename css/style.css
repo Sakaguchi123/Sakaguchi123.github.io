@@ -11,7 +11,7 @@ img {
   display: inline-block;
   /* margin-left: 700px; */
   width: 100%;
-  height: auto;
+  height: 100vh;
   z-index: 1;
 }
 .img-box{
