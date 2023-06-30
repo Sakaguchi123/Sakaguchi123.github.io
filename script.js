@@ -286,12 +286,14 @@ function mute() {
     beepSound.muted = false;            //false = 音が出る
     correctSound.muted = false;
     grilleSound.muted = false;
+    timeUpSound.muted = false;
     unVol.style.visibility = "hidden";
     vol.style.visibility = "visible";
   }else {
     beepSound.muted = true;             //true = 音が出ない
     correctSound.muted = true;
     grilleSound.muted = true;
+    timeUpSound.muted = true;
     unVol.style.visibility = "visible";
     vol.style.visibility = "hidden";
   }
